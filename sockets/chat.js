@@ -1,5 +1,6 @@
 module.exports = function(io){
 	var	sockets	=	io.sockets;
+	var redis = require('redis').createClient()
 	console.log("conexão sockets iniciada")
 	var crypto = require("crypto")
 	var onlines = {}
@@ -10,12 +11,16 @@ module.exports = function(io){
 		var session = client.handshake.session 
 		var usuario = session.usuario
 		
-		onlines[usuario.email] = usuario.email
-		for(var email in onlines){
-			console.log("onlines"+email)
-			client.emit("notify-onlines", email)
-			client.broadcast.emit("notify-onlines", email)
-		}
+		//onlines[usuario.email] = usuario.email
+		redis.sadd('onlines', usuario.email, function(erro){
+			redis.smembers('onlines', function(erro, emails){
+				emails.forEach(function(email){
+					console.log("onlines"+email)
+					client.emit("notify-onlines", email)
+					client.broadcast.emit("notify-onlines", email)
+				})
+			})
+		})
 
 
 		client.on('send-server', function(msg){
@@ -23,7 +28,7 @@ module.exports = function(io){
 			var sala = session.sala
 			var data = {email: usuario.email, sala: sala}
 			var msg = "<b>"+usuario.nome+":</b> "+msg+"</br>"
-
+			redis.lpush(sala, msg)
 			client.broadcast.emit('new-message', data)
 			client.emit('send-client', msg)
 			client.in(sala).emit('send-client', msg);
@@ -31,6 +36,7 @@ module.exports = function(io){
 
 		client.on("join", function(sala){
 			if (!sala) {
+				
 				var timestamp = new Date().toString()
 				var md5 = crypto.createHash('md5')
 				sala = md5.update(timestamp).digest('hex')
@@ -39,16 +45,25 @@ module.exports = function(io){
 
 			session.sala = sala
 			client.join(sala)
+
+			var msg = "<b>"+usuario.nome+":</b>entrou<br>"
+			redis.lpush(sala, msg, function(erro, res){
+				redis.lrange(sala, 0, -1, function(erro, msgs){
+					msgs.forEach(function(msg){
+						sockets.in(sala).emit("send-client", msg)
+					})
+				})
+			})
 		})
 
 		client.on('disconnect', function(){
 			var	sala = session.sala
 			var msg	= "<b>"+ usuario.nome +":</b> saiu.<br>";
 			
+			redis.lpush(sala, msg)
 			client.broadcast.emit('notify-offlines', usuario.email);
 			sockets.in(sala).emit('send-client', msg);
-			
-			delete	onlines[usuario.email];
+			redis.srem('onlines', usuario.email)
 			
 			client.leave(session.sala)
 
