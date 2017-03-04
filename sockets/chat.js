@@ -2,10 +2,22 @@ module.exports = function(io){
 	var	sockets	=	io.sockets;
 	console.log("conexão sockets iniciada")
 	var crypto = require("crypto")
-	sockets.on('connection', function(client){
-	var session = client.handshake.session 
+	var onlines = {}
 	
-	var usuario = session.usuario
+
+	sockets.on('connection', function(client){
+		
+		var session = client.handshake.session 
+		var usuario = session.usuario
+		
+		onlines[usuario.email] = usuario.email
+		for(var email in onlines){
+			console.log("onlines"+email)
+			client.emit("notify-onlines", email)
+			client.broadcast.emit("notify-onlines", email)
+		}
+
+
 		client.on('send-server', function(msg){
 			console.log("recebendo uma mensagen no server")
 			var sala = session.sala
@@ -30,7 +42,16 @@ module.exports = function(io){
 		})
 
 		client.on('disconnect', function(){
+			var	sala = session.sala
+			var msg	= "<b>"+ usuario.nome +":</b> saiu.<br>";
+			
+			client.broadcast.emit('notify-offlines', usuario.email);
+			sockets.in(sala).emit('send-client', msg);
+			
+			delete	onlines[usuario.email];
+			
 			client.leave(session.sala)
+
 		})
 	})
 
