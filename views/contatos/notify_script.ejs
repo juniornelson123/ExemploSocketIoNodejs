@@ -1,0 +1,9 @@
+<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script type="text/javascript">
+	var socket = io("http://localhost:5000") 
+	socket.on('new-message', function(data){
+		var chat = document.getElementById('chat_'+data.email);
+		chat.href += '?sala='+data.sala
+		alert("Você recebeu uma mensagem do "+data.email) 
+	})
+</script>
