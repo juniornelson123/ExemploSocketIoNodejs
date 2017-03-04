@@ -13,6 +13,7 @@ var server = require('http').Server(app)
 var io = require("socket.io")(server)
 var cookie = cookieParser(SECRET);
 var store = new expressSession.MemoryStore();
+require("./config/database.js")('mongodb://localhost:27017/ntalk');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
