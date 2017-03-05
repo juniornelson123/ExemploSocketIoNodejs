@@ -1,0 +1,15 @@
+<header>
+	<h2>Ntalk	-	Editar	contato</h2>
+</header>
+
+<section>
+	<form	action="/contato/"	method="post">
+		<label>Nome:</label>
+		<input	type="text"	ng-model="contato.nome">
+		
+		<label>E-mail:</label>
+		<input	type="text"	ng-model="contato.email">
+		
+		<button	type="submit" ng-click="update(contato)">Atualizar</button>
+	</form>
+</section>

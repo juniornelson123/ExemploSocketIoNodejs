@@ -11,7 +11,7 @@ module.exports = function(app){
 
 					var contatos = usuario.contatos
 					var params = {contatos: contatos, usuarios: usuarios, usuario: req.session.usuario._id}
-					res.render('contatos/index', params)
+					res.json(params)
 					
 				  // object of all the users
 				});
@@ -28,7 +28,7 @@ module.exports = function(app){
 				var contatos = usuario.contatos;
 				contatos.push(contatoId);
 				usuario.save(function(){
-					res.redirect("/contatos")
+					res.json(contatos)
 				})
 			})
 		},
@@ -46,14 +46,13 @@ module.exports = function(app){
 			})
 		},
 		show:	function(req,	res)	{
-			var _id = req.session.usuario._id
-
-			Usuario.findById(_id, function(erro, usuario){
-				var	contatoId	= req.params.id
-				, contato =	usuario.contatos.id(contatoId)
-				, resultado =	{contato: contato};
+			var	contatoId	= req.params.id
+			
+				console.log(req.params.id)
+			Usuario.findById(contatoId, function(erro, contato){
+				var resultado =	{contato: contato};
 				
-				res.render('contatos/show',	resultado);		
+				res.json(resultado);		
 			})
 		},
 		edit: function(req,	res)	{
@@ -85,7 +84,7 @@ module.exports = function(app){
 				var contatoId = req.params.id
 				usuario.contatos.id(contatoId).remove()
 				usuario.save(function(){
-					res.redirect("/contatos")
+					res.json(usuario)
 				})
 			})
 		}

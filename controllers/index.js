@@ -20,7 +20,7 @@ module.exports = function(app){
 					if (usuario) {
 						console.log("Usuario existe "+usuario)
 						req.session.usuario = usuario;
-						res.redirect('/contatos')		
+						res.redirect('/')		
 					}else{
 						var usuario =req.body.usuario
 						Usuario.create(usuario, function(erro, usuario){
@@ -29,7 +29,7 @@ module.exports = function(app){
 							}else{
 								console.log("Criando usuario "+usuario)
 								req.session.usuario = usuario
-								res.redirect('/contatos')
+								res.redirect('/')
 							}
 						})	
 					}

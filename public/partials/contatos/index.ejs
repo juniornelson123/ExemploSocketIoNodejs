@@ -1,0 +1,90 @@
+
+<header>
+	<h1>Ntalk</h1>
+	<h4>Lista	de	contatos </h4>
+</header>
+
+<section>
+
+<hr>
+<h3>Adicionar Contatos</h3>
+<input type="text" ng-model="filter">
+<table>
+	<thead>
+		<tr>
+			<th>Nome</th>
+			<th>E-mail</th>
+			<th>Ação</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="usuario in usuarios | filter: filter">
+			<td>{{	usuario.nome }}</td>
+			<td>{{	usuario.email }}</td>
+			
+			<td><a	href="/adiciona-contato/{{ usuario._id	}}">Adicionar ao contatos</a>
+		</tr>
+	</tbody>
+</table>
+
+<hr>
+<h3>Meus Contatos</h3>
+
+<table>
+	<thead>
+		<tr>
+			<th>Nome</th>
+			<th>E-mail</th>
+			<th>Status</th>
+			<th>Ação</th>
+		</tr>
+	</thead>
+	<tbody>
+			<tr ng-repeat="contato in contatos">
+				<td>{{	contato.nome	}}</td>
+				<td>{{ contato.email	}}</td>
+				<td>
+					<span id="notify_{{ contato.email }}">Offline</span>
+				</td>
+				<td><a	href="#!/contato/{{ contato._id }}/show">Detalhes</a>
+				<a	href="/chat/?dest={{ contato._id }}" id="chat_{{ contato.email %>%>">Conversar</a>
+						</td>
+					</tr>
+		
+	</tbody>
+</table>
+</section>
+<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script type="text/javascript">
+	var socket = io("http://localhost:5000") 
+	console.log( usuario )
+	var notify = function(data){
+		var id = 'notify_'+data.email
+		var notify = document.getElementById(id)
+		if (notify) {
+			notify.textContent = data.msg;
+		} 
+	}
+
+	socket.on('notify-onlines', function(email){
+		notify({email: email, msg: "Online"})
+	})
+
+	socket.on('notify-offlines', function(email){
+		notify({email: email, msg: "Offline"})
+	})
+
+	socket.on('new-message', function(data, dest, rem){
+		console.log('remetente'+rem)
+		console.log("destinatario"+dest)
+
+		if (usuario == dest) {
+			notify({email: data.email, msg: "Mensagem"})
+			alert("Você recebeu uma mensagem do "+data.email) 
+			var chat = document.getElementById('chat_'+data.email);
+			chat.href += '&sala='+data.sala
+			
+		}
+		
+	})
+</script>
