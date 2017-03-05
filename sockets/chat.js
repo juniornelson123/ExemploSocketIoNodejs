@@ -23,18 +23,22 @@ module.exports = function(io){
 		})
 
 
-		client.on('send-server', function(msg){
+		client.on('send-server', function(msg, dest){
 			console.log("recebendo uma mensagen no server")
+			console.log(dest)
+			console.log(usuario._id)
 			var sala = session.sala
 			var data = {email: usuario.email, sala: sala}
 			var msg = "<b>"+usuario.nome+":</b> "+msg+"</br>"
 			redis.lpush(sala, msg)
-			client.broadcast.emit('new-message', data)
+			client.broadcast.emit('new-message', data, dest, usuario._id)
+		
 			client.emit('send-client', msg)
 			client.in(sala).emit('send-client', msg);
 		})
 
 		client.on("join", function(sala){
+			console.log("criando sala")
 			if (!sala) {
 				
 				var timestamp = new Date().toString()

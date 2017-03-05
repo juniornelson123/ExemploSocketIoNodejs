@@ -15,13 +15,8 @@ module.exports = function(app){
 		},
 
 		contatos:[{
-			nome: {
-				type: String
-			},
-
-			email:{
-				type: String
-			}
+			type: mongoose.Schema.ObjectId,
+			ref: "Usuario"
 		}]
 	})
 

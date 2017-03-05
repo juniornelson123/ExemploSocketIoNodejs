@@ -3,6 +3,7 @@
 		<script>
 			var socket = io("http://localhost:5000")
 			socket.emit('join', '<%= sala %>')
+			console.log('<%=dest%>')
 			socket.on('send-client', function(msg){
 				var chat = document.getElementById('chat')
 				console.log(msg)
@@ -11,7 +12,7 @@
 
 			var enviar = function(){
 				var msg = document.getElementById('msg').value
-				socket.emit('send-server', msg)
+				socket.emit('send-server', msg, '<%= dest %>')
 			}
 		</script>
 		<header>

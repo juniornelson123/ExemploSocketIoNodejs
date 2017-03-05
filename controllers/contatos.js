@@ -5,15 +5,36 @@ module.exports = function(app){
 		index: function(req, res){
 
 			var _id = req.session.usuario._id;
-			Usuario.findById(_id, function(erro, usuario){
-				var contatos = usuario.contatos
-				var params = {contatos: contatos}
-				res.render('contatos/index', params)
-				
+			Usuario.findById(_id).populate('contatos').exec(function(erro, usuario){
+				Usuario.find({ _id: { $ne: req.session.usuario._id } }, function(err, usuarios) {
+				  if (err) throw err;
+				  	console.log(usuario);
+
+					var contatos = usuario.contatos
+					var params = {contatos: contatos, usuarios: usuarios, usuario: usuario}
+					res.render('contatos/index', params)
+					
+				  // object of all the users
+				});
 			})
 			
 
 		}, 
+
+		adiciona: function(req, res){
+			console.log(req.params.id)
+			var contatoId = req.params.id
+			var _id = req.session.usuario._id
+			Usuario.findById(_id, function(erro, usuario){
+				var contatos = usuario.contatos;
+				contatos.push(contatoId);
+				usuario.save(function(){
+					res.redirect("/contatos")
+				})
+			})
+		},
+
+
 		create: function(req, res){
 			var _id = req.session.usuario._id
 			Usuario.findById(_id, function(erro, usuario){

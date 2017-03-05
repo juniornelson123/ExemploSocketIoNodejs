@@ -3,7 +3,31 @@
 		<h1>Ntalk</h1>
 		<h4>Lista	de	contatos</h4>
 	</header>
+	
 	<section>
+	<table>
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>E-mail</th>
+				<th>Status</th>
+				<th>Ação</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%	usuarios.forEach(function(usuario,	index)	{	%>
+				<tr>
+					<td><%-	usuario.nome	%></td>
+					<td><%-	usuario.email	%></td>
+					<td>
+						<span id="notify_<%= usuario.email %>">Offline</span>
+					</td>
+					<td><a	href="/adiciona-contato/<%-	usuario._id	%>">Adicionar ao contatos</a>
+						</tr>
+				<%	})	%>
+		</tbody>
+	</table>
+
 	<form	action="/contato"	method="post">
 		<input	type="text"	name="contato[nome]"
 									placeholder="Nome">
@@ -29,7 +53,7 @@
 						<span id="notify_<%= contato.email %>">Offline</span>
 					</td>
 					<td><a	href="/contato/<%-	contato._id	%>">Detalhes</a>
-					<a	href="/chat" id="chat_<%= contato.email %>%>">Conversar</a>
+					<a	href="/chat/?dest=<%= contato._id %>" id="chat_<%= contato.email %>%>">Conversar</a>
 							</td>
 						</tr>
 				<%	})	%>
