@@ -8,10 +8,9 @@ module.exports = function(app){
 			Usuario.findById(_id).populate('contatos').exec(function(erro, usuario){
 				Usuario.find({ _id: { $ne: req.session.usuario._id } }, function(err, usuarios) {
 				  if (err) throw err;
-				  	console.log(usuario);
 
 					var contatos = usuario.contatos
-					var params = {contatos: contatos, usuarios: usuarios, usuario: usuario}
+					var params = {contatos: contatos, usuarios: usuarios, usuario: req.session.usuario._id}
 					res.render('contatos/index', params)
 					
 				  // object of all the users

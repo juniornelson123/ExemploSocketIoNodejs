@@ -1,7 +1,7 @@
 <%	include	../header	%>
 	<header>
 		<h1>Ntalk</h1>
-		<h4>Lista	de	contatos</h4>
+		<h4>Lista	de	contatos <%= usuario%></h4>
 	</header>
 	
 	<section>
@@ -10,7 +10,6 @@
 			<tr>
 				<th>Nome</th>
 				<th>E-mail</th>
-				<th>Status</th>
 				<th>Ação</th>
 			</tr>
 		</thead>
@@ -19,9 +18,7 @@
 				<tr>
 					<td><%-	usuario.nome	%></td>
 					<td><%-	usuario.email	%></td>
-					<td>
-						<span id="notify_<%= usuario.email %>">Offline</span>
-					</td>
+					
 					<td><a	href="/adiciona-contato/<%-	usuario._id	%>">Adicionar ao contatos</a>
 						</tr>
 				<%	})	%>
@@ -47,7 +44,7 @@
 		<tbody>
 			<%	contatos.forEach(function(contato,	index)	{	%>
 				<tr>
-					<td><%-	contato.nome	%></td>
+					<td>"<%= contato._id%>: <%-	contato.nome	%>"</td>
 					<td><%-	contato.email	%></td>
 					<td>
 						<span id="notify_<%= contato.email %>">Offline</span>
