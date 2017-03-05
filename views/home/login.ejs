@@ -1,0 +1,30 @@
+<html ng-app="ntalk">
+	<head>
+		<meta charset="utf-8">
+		<title>Ntalk - Agenda de contatos</title>
+		<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap.css">
+	</head>
+	<body>
+		<% include ../header %>
+		<div class="container">
+			
+			<header>
+				<h1>Ntalk</h1>
+				<h4>Bem-vindo!</h4>
+			</header>
+			<section>
+				<form	action="/entrar" method="post">
+					<input	type="text"	name="usuario[nome]"	placeholder="Nome">
+					<br>
+					<input	type="text"	name="usuario[email]"		placeholder="E-mail">
+					<br>
+					<button	type="submit">Entrar</button>
+				</form>
+			</section>
+				<% include ../footer %>		
+		</div>
+	
+	<script type="text/javascript" src="/vendor/angular/angular.js"></script>
+	<script type="text/javascript" src="/javascripts/main.js"></script>
+	</body>
+</html>		

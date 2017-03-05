@@ -3,7 +3,12 @@ module.exports = function(app){
 
 	var IndexController = {
 		index: function(req,res){
-			res.render('home/index', {title: "Bem vindo"})
+			if(req.session.usuario){
+				res.render('home/index', {title: "Bem vindo"})
+
+			}else{
+				res.render('home/login', {title: "Bem vindo"})
+			}
 		},
 
 		login: function(req, res){
