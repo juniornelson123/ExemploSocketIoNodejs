@@ -1,6 +1,6 @@
 angular.module("ntalk").config(function($routeProvider) {
 	
-	$routeProvider.when("/",{
+	/*$routeProvider.when("/",{
 		templateUrl: 'partials/contatos/index.ejs',
 		controller: 'ContatosController'
 	})
@@ -16,5 +16,5 @@ angular.module("ntalk").config(function($routeProvider) {
 	})
 
 
-	$routeProvider.otherwise("/")
+	$routeProvider.otherwise("/")*/
 })

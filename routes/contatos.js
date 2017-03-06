@@ -6,6 +6,6 @@ module.exports = function(app){
 	app.post("/contato",autenticar, contatos.create)
 	app.get("/contato/:id/editar",autenticar, contatos.edit)
 	app.post("/contato/:id",autenticar, contatos.update)
-	app.get("/contato/:id/destroy",autenticar, contatos.destroy)
+	app.post("/contato/:id/destroy",autenticar, contatos.destroy)
 	app.get("/adiciona-contato/:id", autenticar, contatos.adiciona)
 }

@@ -11,7 +11,7 @@ module.exports = function(app){
 
 					var contatos = usuario.contatos
 					var params = {contatos: contatos, usuarios: usuarios, usuario: req.session.usuario._id}
-					res.json(params)
+					res.render("contatos/index",params)
 					
 				  // object of all the users
 				});
@@ -28,7 +28,7 @@ module.exports = function(app){
 				var contatos = usuario.contatos;
 				contatos.push(contatoId);
 				usuario.save(function(){
-					res.json(contatos)
+					res.redirect("/contatos")
 				})
 			})
 		},
@@ -52,7 +52,7 @@ module.exports = function(app){
 			Usuario.findById(contatoId, function(erro, contato){
 				var resultado =	{contato: contato};
 				
-				res.json(resultado);		
+				res.render('contatos/show', resultado);		
 			})
 		},
 		edit: function(req,	res)	{
@@ -84,7 +84,7 @@ module.exports = function(app){
 				var contatoId = req.params.id
 				usuario.contatos.id(contatoId).remove()
 				usuario.save(function(){
-					res.json(usuario)
+					res.redirect('/contatos', usuario)
 				})
 			})
 		}

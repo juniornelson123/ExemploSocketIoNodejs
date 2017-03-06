@@ -1,9 +1,10 @@
 <%	include	../header	%>
 	<header>
 		<h1>Ntalk</h1>
-		<h4>Lista	de	contatos <%= usuario%></h4>
+		<h4>Lista	de	contatos</h4>
 	</header>
-	
+	<hr>
+	<h1></h1>	
 	<section>
 	<table>
 		<thead>
@@ -25,15 +26,10 @@
 		</tbody>
 	</table>
 
-	<form	action="/contato"	method="post">
-		<input	type="text"	name="contato[nome]"
-									placeholder="Nome">
-		<input	type="text"	name="contato[email]"
-									placeholder="E-mail">
-		<button	type="submit">Cadastrar</button>
-	</form>
+	<hr>
+	<h1>Meus Contatos</h1>
 	<table>
-		<thead>
+		<thead> 
 			<tr>
 				<th>Nome</th>
 				<th>E-mail</th>

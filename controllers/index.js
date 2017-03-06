@@ -3,12 +3,12 @@ module.exports = function(app){
 
 	var IndexController = {
 		index: function(req,res){
-			if(req.session.usuario){
+			//if(req.session.usuario){
 				res.render('home/index', {title: "Bem vindo"})
 
-			}else{
+			/*}else{
 				res.render('home/login', {title: "Bem vindo"})
-			}
+			}*/
 		},
 
 		login: function(req, res){
@@ -20,7 +20,7 @@ module.exports = function(app){
 					if (usuario) {
 						console.log("Usuario existe "+usuario)
 						req.session.usuario = usuario;
-						res.redirect('/')		
+						res.redirect('/contatos')		
 					}else{
 						var usuario =req.body.usuario
 						Usuario.create(usuario, function(erro, usuario){
@@ -29,7 +29,7 @@ module.exports = function(app){
 							}else{
 								console.log("Criando usuario "+usuario)
 								req.session.usuario = usuario
-								res.redirect('/')
+								res.redirect('/contatos')
 							}
 						})	
 					}
