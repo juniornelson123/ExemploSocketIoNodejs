@@ -3,14 +3,15 @@ module.exports = function(app){
 	
 	var ContatosController = {
 		index: function(req, res){
-
+			var sala= req.query.sala
+			var dest= req.query.dest
 			var _id = req.session.usuario._id;
 			Usuario.findById(_id).populate('contatos').exec(function(erro, usuario){
 				Usuario.find({ _id: { $ne: req.session.usuario._id } }, function(err, usuarios) {
 				  if (err) throw err;
 
 					var contatos = usuario.contatos
-					var params = {contatos: contatos, usuarios: usuarios, usuario: req.session.usuario._id}
+					var params = {contatos: contatos, usuarios: usuarios, usuario: req.session.usuario._id, sala: sala,dest: dest}
 					res.render("contatos/index",params)
 					
 				  // object of all the users

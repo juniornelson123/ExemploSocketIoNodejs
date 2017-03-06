@@ -1,59 +1,117 @@
+<div class="container">
 <%	include	../header	%>
+<div class="row pad-top pad-bottom">
 	<header>
 		<h1>Ntalk</h1>
 		<h4>Lista	de	contatos</h4>
 	</header>
-	<hr>
-	<h1></h1>	
-	<section>
-	<table>
-		<thead>
-			<tr>
-				<th>Nome</th>
-				<th>E-mail</th>
-				<th>Ação</th>
-			</tr>
-		</thead>
-		<tbody>
-			<%	usuarios.forEach(function(usuario,	index)	{	%>
-				<tr>
-					<td><%-	usuario.nome	%></td>
-					<td><%-	usuario.email	%></td>
-					
-					<td><a	href="/adiciona-contato/<%-	usuario._id	%>">Adicionar ao contatos</a>
-						</tr>
-				<%	})	%>
-		</tbody>
-	</table>
+		<div class="col-lg-6 col-md-6 col-sm-6">
+      <div class="chat-box-div">
+          <div class="chat-box-head">
+              Conversas
+                  <div class="btn-group pull-right">
+                      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                          <span class="fa fa-cogs"></span>
+                          <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                          <li><a href="#"><span class="fa fa-map-marker"></span>&nbsp;Invisible</a></li>
+                          <li><a href="#"><span class="fa fa-comments-o"></span>&nbsp;Online</a></li>
+                          <li><a href="#"><span class="fa fa-lock"></span>&nbsp;Busy</a></li>
+                          <li class="divider"></li>
+                          <li><a href="#"><span class="fa fa-circle-o-notch"></span>&nbsp;Logout</a></li>
+                      </ul>
+                  </div>
+          </div>
+          <div class="panel-body chat-box-main">
+          		<pre	id="chat"></pre>
+              <!--div class="chat-box-left">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </div>
+              <div class="chat-box-name-left">
+                  <img src="/img/usuario.png" alt="bootstrap Chat box user image" class="img-circle" />
+                  <span id=usuario-enviado>Justine Goliyad</span>
+              </div>
+              <hr class="hr-clas" /-->
+              
+          </div>
+          <div class="chat-box-footer">
+              <div class="input-group">
+                  <input type="text" class="form-control" id="msg" placeholder="Envie uma mensagem...">
+                  <span class="input-group-btn">
+                      <button class="btn btn-info" onclick="enviar();" type="button">Enviar</button>
+                  </span>
+              </div>
+          </div>
 
-	<hr>
-	<h1>Meus Contatos</h1>
-	<table>
-		<thead> 
-			<tr>
-				<th>Nome</th>
-				<th>E-mail</th>
-				<th>Status</th>
-				<th>Ação</th>
-			</tr>
-		</thead>
-		<tbody>
-			<%	contatos.forEach(function(contato,	index)	{	%>
-				<tr>
-					<td>"<%= contato._id%>: <%-	contato.nome	%>"</td>
-					<td><%-	contato.email	%></td>
-					<td>
-						<span id="notify_<%= contato.email %>">Offline</span>
-					</td>
-					<td><a	href="/contato/<%-	contato._id	%>">Detalhes</a>
-					<a	href="/chat/?dest=<%= contato._id %>" id="chat_<%= contato.email %>%>">Conversar</a>
-							</td>
-						</tr>
-				<%	})	%>
-		</tbody>
-	</table>
-</section>
+      </div>
+
+  </div>
+	
+	<div class="col-lg-3 col-md-3 col-sm-3">
+      <div class="chat-box-online-div">
+          <div class="chat-box-online-head">
+              Meus amigos (<%- contatos.length %>)
+          </div>
+          <div class="panel-body chat-box-online">
+          		<%	contatos.forEach(function(contato,	index)	{	%>
+              <div class="chat-box-online-left">
+                <img src="/img/usuario.png" alt="bootstrap Chat box user image" class="img-circle" />
+                <a	href="/contatos/?dest=<%= contato._id %>" id="chat_<%= contato.email %>%>">
+                  <%- contato.email %>
+               	</a>
+
+              </div>
+              <% })%>
+              <hr class="hr-clas-low" />
+
+              
+          </div>
+
+      </div>
+
+  </div>
+ <div class="col-lg-3 col-md-3 col-sm-3">
+      <div class="chat-box-new-div">
+          <div class="chat-box-new-head">
+              Novos Amigos (<%= usuarios.length %>)
+          </div>
+          <div class="panel-body chat-box-new">
+
+          	<%	usuarios.forEach(function(usuario,	index)	{	%>
+              <div class="chat-box-online-left">
+              <img src="/img/usuario.png" alt="bootstrap Chat box user image" class="img-circle" />
+              <%= usuario.nome %><br>
+                 <a	href="/adiciona-contato/<%-	usuario._id	%>">Adicionar ao contatos</a>
+                  <hr class="hr-clas-low" />
+              </div>    
+            <% }) %>      
+
+             
+          </div>
+
+      </div>
+	</div>
+ </div> 
 
 <%	include	notify_script	%>
 <%	include	../exit	%>
 <%	include	../footer	%>
+<script src="/vendor/jquery/dist/jquery.js"></script>
+<!-- CORE BOOTSTRAP SCRIPTS  FILE -->
+<script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
+</div>
+<script type="text/javascript">
+	socket.emit('join', '<%= sala %>')
+			console.log('<%=dest%>')
+			socket.on('send-client', function(msg){
+				var chat = document.getElementById('chat')
+				console.log(msg)
+				chat.innerHTML += msg;
+			})
+	var enviar = function(){
+		var msg = document.getElementById('msg').value
+		socket.emit('send-server', msg, '<%= dest %>')
+	}
+</script>
