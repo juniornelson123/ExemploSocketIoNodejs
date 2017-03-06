@@ -6,16 +6,16 @@
 		var id = 'notify_'+data.email
 		var notify = document.getElementById(id)
 		if (notify) {
-			notify.textContent = data.msg;
+			notify.innerHTML = data.msg;
 		} 
 	}
 
 	socket.on('notify-onlines', function(email){
-		notify({email: email, msg: "Online"})
+		notify({email: email, msg: "<span class='user-status is-online'></span>"})
 	})
 
 	socket.on('notify-offlines', function(email){
-		notify({email: email, msg: "Offline"})
+		notify({email: email, msg: "<span class='user-status is-offline'></span>"})
 	})
 
 	socket.on('new-message', function(data, dest, rem){
@@ -23,8 +23,7 @@
 		console.log("destinatario"+dest)
 
 		if ('<%= usuario %>' == dest) {
-			notify({email: data.email, msg: "Mensagem"})
-			alert("Você recebeu uma mensagem do "+data.email) 
+			notify({email: data.email, msg: "<span class='user-status is-message'></span>"})
 			var chat = document.getElementById('chat_'+data.email);
 			chat.href += '&sala='+data.sala
 			

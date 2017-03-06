@@ -60,6 +60,7 @@
                 <img src="/img/usuario.png" alt="bootstrap Chat box user image" class="img-circle" />
                 <a	href="/contatos/?dest=<%= contato._id %>" id="chat_<%= contato.email %>%>">
                   <%- contato.email %>
+                  <span id="notify_<%= contato.email %>"><span class='user-status is-offline'></span></span>
                	</a>
 
               </div>
@@ -82,7 +83,8 @@
           	<%	usuarios.forEach(function(usuario,	index)	{	%>
               <div class="chat-box-online-left">
               <img src="/img/usuario.png" alt="bootstrap Chat box user image" class="img-circle" />
-              <%= usuario.nome %><br>
+              <%= usuario.nome %>
+              <br>
                  <a	href="/adiciona-contato/<%-	usuario._id	%>">Adicionar ao contatos</a>
                   <hr class="hr-clas-low" />
               </div>    
